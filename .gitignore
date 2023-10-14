@@ -1,24 +1,24 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Ignore the virtual environment folder
+venv/
 
-clients/node_modules
-clients/dist
-clients/dist-ssr
-*.local
+# Ignore Node.js modules and build artifacts in the "client" folder
+client/node_modules/
+client/build/
+client/dist/
+client/*.log
 
-# Editor directories and files
-!.vscode/extensions.json
-.idea
+# Ignore Python bytecode files and cache in the "flask-server" folder
+flask-server/__pycache__/
+flask-server/*.pyc
+
+# Ignore environment-specific configuration files
+.env
+
+# Ignore development and editor-specific files
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-flask-server/venv
+.vscode/
+*.swp
+
+# Ignore dependencies in both frontend and backend
+client/package-lock.json
+client/yarn.lock
