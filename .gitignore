@@ -1,6 +1,6 @@
 # Ignore the virtual environment folder
 venv/
-
+flask-server/venv/
 # Ignore Node.js modules and build artifacts in the "client" folder
 client/node_modules/
 client/build/
