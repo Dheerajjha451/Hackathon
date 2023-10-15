@@ -15,14 +15,16 @@ export function Recomm(props){
 }
 export function Res(props){
     return(
-        <a href={props.url} target="_blank_"><div className="max-h-fit h-[15vh] flex w-[25vw] bg-white drop-shadow-xl rounded-xl">
-            {props.image &&<div className="aspect-square w-1/2"
-                style={{
-                    backgroundImage:`url(${props.image})`,
-                    backgroundPosition:"center",
-                    backgroundSize:"cover"
-                }}
-            />}
+        <a href={props.url} target="_blank">
+        <div className="max-h-fit h-[15vh] flex w-[25vw] bg-white drop-shadow-xl rounded-xl">
+            {props.image && (
+            <img loading="lazy"
+            src={props.image}
+            alt="Your Alt Text Here"
+            className="aspect-square w-1/2 rounded-l-xl"
+            />
+        )}
+
             <div className="px-4 py-2 text-sm">
                 <h1 className="font-bold py-2 text-lg">{props.title}</h1>
                 {/* <h2>{props.description}</h2> */}
