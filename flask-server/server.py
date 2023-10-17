@@ -14,17 +14,44 @@ collection=db['Recommend']
 cur=db['current']
 least=db['least']
 # Function
-from transformers import pipeline
+#code start here for summarization
+# from transformers import pipeline, errors
+from flask import render_template, url_for
+from flask import request as req
+# def summarize_news_transformer(news_content, max_length=150, min_length=50):
+#     try:
+#         summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+#         summary = summarizer([news_content], max_length=max_length, min_length=min_length, max_time=120)[0]['summary_text']
+#         return summary
+#     except errors.ModelCardNotFoundError as e:
+#         return f"Model not found: {str(e)}"
+#     except Exception as e:
+#         return f"Error during summarization: {str(e)}"
+def Summarize():
+	if req.method == "POST":
+		API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
+		headers = {"Authorization": f"Bearer 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"}
 
-def summarize_news_transformer(news_content, max_length=150, min_length=50):
- 
-    summarizer = pipeline("summarization")
-    
-    try:
-        summary = summarizer(news_content, max_length=max_length, min_length=min_length, max_time=120)[0]['summary_text']
-        return summary
-    except Exception as e:
-        return f"Error during summarization: {str(e)}"
+		data = req.form["data"]
+
+		maxL = int(req.form["maxL"])
+		minL = maxL // 4
+
+		def query(payload):
+			response = requests.post(API_URL, headers=headers, json=payload)
+			return response.json()
+
+		output = query({
+			"inputs": data,
+			"parameters": {"min_length": minL, "max_length": maxL},
+		})[0]
+
+		return render_template("index.html", result=output["summary_text"])
+	else:
+		return render_template("index.html")
+     
+#ends here
+
 
 # CORS(app)
 def writetoJSONfile(path,fileName,data):
