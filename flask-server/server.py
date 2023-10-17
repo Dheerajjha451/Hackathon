@@ -1,9 +1,8 @@
-from flask import Flask,jsonify
+from flask import Flask,jsonify,request
 import requests
 import pandas
 import json
 import jsonpickle
-from bs4 import BeautifulSoup
 from pymongo import MongoClient
 # import flask_cors import CORS
 new_data_api="pub_307633ead925a313254975dc49bc599c99606"
@@ -14,6 +13,7 @@ client=MongoClient('mongodb+srv://mridultiwari:iH19Mm1c7XxEBnpz@news.tov5byl.mon
 db=client['News']
 collection=db['Recommend']
 cur=db['current']
+least=db['least']
 
 # CORS(app)
 def writetoJSONfile(path,fileName,data):
@@ -24,44 +24,47 @@ def writetoJSONfile(path,fileName,data):
 
 @app.route("/search",methods=['GET'])
 def search():
-    keywrd='MLdata'
+    keywrd=request.args.query
 
-    # Specify the URL of the ResearchGate search page you want to scrape.
-    url = "https://www.researchgate.net/search/publication?q=MLdata"
+    apikey = "64df0ff2ec4f5e5563265ebebffba11f"
+    url=f"https://gnews.io/api/v4/search?q={keywrd}&apikey={apikey}"
 
-    # Send an HTTP GET request to the URL.
-    response = requests.get(url)
+    req = requests.get(url)
+    data=req.json()
+    writetoJSONfile('client/public/list','search',data)
+    
+    return data
 
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        articles = soup.find_all("div", id="page-container")
+@app.route("/recommend",methods=['GET'])
+def recom():
+    keyword="research"
+    req=requests.get("https://newsapi.org/v2/top-headlines?q="+keyword+"&country=in&apiKey=5fa7fea02e704a4894aa8b0189d08027")
+    data=req.json()
+    print(data)
+    collection.delete_many({})
+    for article in data["articles"]:
+        news_article = {
+            "title": article["title"],
+            "description": article["description"],
+            "publishedAt": article["publishedAt"],
+            "url": article["url"],
+            "imageUrl": article["urlToImage"],
+            "author": article["source"]["name"]
+        }
 
-        # for article in articles:
-        #     news_Article={
-        #         "title": article.find("h2", class_="nova-std-page-header-title nova-std-page-header-title--top nova-v-publication-item__title").text,
-
-        #         "description": article.find("div", class_="nova-std-publication-item__description nova-std-publication-item__description--clamp-3").text,
-
-        #         "link": article.find("a", class_="nova-e-link nova-e-link--color-inherit nova-e-link--theme-bare").get("href"),
-
-        #         "image": article.find("img", class_="nova-c-image nova-c-image--size-l nova-c-image--ratio-16x9")["src"],
-        #     }
-        # writetoJSONfile('client/public/list','search',news_Article)
         
-    else:
-        print("Failed to retrieve the web page.")
+        collection.insert_one(news_article)
 
-
-    return articles
-
-
-@app.route("/recommended",methods=['GET'])
+    print("Data inserted successfully.")
+    # writetoJSONfile('client/public/list','recommend',json_data)
+    return data
+@app.route("/least",methods=['GET'])
 def index():
     req=requests.get('https://newsdata.io/api/1/news?apikey='+new_data_api+'&q=research&language=en')
     data=req.json()
     # print(data)
     # json_data=json.loads(data)
-    collection.delete_many({})
+    least.delete_many({})
     for article in data["results"]:
         news_article = {
             "title": article["title"],
@@ -73,7 +76,7 @@ def index():
         }
 
         
-        collection.insert_one(news_article)
+        least.insert_one(news_article)
 
     print("Data inserted successfully.")
     # writetoJSONfile('client/public/list','recommend',json_data)

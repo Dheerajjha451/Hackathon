@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import axios from "axios";
+import {Link} from "react-router-dom"
 /* eslint-disable react/prop-types */
 export const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
@@ -37,14 +38,22 @@ export const SearchBar = ({ onSearch }) => {
 
   export const SearchModal=({onSearch})=>{
     const [query, setQuery] = useState("");
+    const [result,setResult]=useState(["ML"]);
   
+    const handleSearch=()=>{
+      axios.get(`https://http://127.0.0.1:5000/search?query=${query}`)
+      .then(response=>{
+        setResult(response.data.articles)
+      })
+      .catch(error=>{
+        console.error(error)
+      })
+    }
     const handleInputChange = (e) => {
       setQuery(e.target.value);
     };
   
-    const handleSearch = () => {
-      onSearch(query);
-    };
+    
   return(
     <div className="bg-black absolute w-screen h-screen">
     <div className="flex flex-start pt-4 justify-center">
@@ -57,7 +66,7 @@ export const SearchBar = ({ onSearch }) => {
             className="block text-xl w-full px-6 py-4 text-purple-700 bg-white border-white-200 focus:border-white-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-20"
             placeholder="Search..."
           />
-          
+           <Link to={{path:"/Search", state:{result}}}><button onClick={handleSearch}>Search</button></Link>
         </div>
       </div>
     </div>
