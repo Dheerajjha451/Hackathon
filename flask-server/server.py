@@ -7,13 +7,24 @@ from pymongo import MongoClient
 # import flask_cors import CORS
 new_data_api="pub_307633ead925a313254975dc49bc599c99606"
 app=Flask(__name__)
-
 #MongoDB CONNECTION
 client=MongoClient('mongodb+srv://mridultiwari:iH19Mm1c7XxEBnpz@news.tov5byl.mongodb.net/?retryWrites=true&w=majority')
 db=client['News']
 collection=db['Recommend']
 cur=db['current']
 least=db['least']
+# Function
+from transformers import pipeline
+
+def summarize_news_transformer(news_content, max_length=150, min_length=50):
+ 
+    summarizer = pipeline("summarization")
+    
+    try:
+        summary = summarizer(news_content, max_length=max_length, min_length=min_length, max_time=120)[0]['summary_text']
+        return summary
+    except Exception as e:
+        return f"Error during summarization: {str(e)}"
 
 # CORS(app)
 def writetoJSONfile(path,fileName,data):
@@ -24,7 +35,8 @@ def writetoJSONfile(path,fileName,data):
 
 @app.route("/search",methods=['GET'])
 def search():
-    keywrd=request.args.query
+    keywrd="research"
+    # keywrd=request.args.query
 
     apikey = "64df0ff2ec4f5e5563265ebebffba11f"
     url=f"https://gnews.io/api/v4/search?q={keywrd}&apikey={apikey}"
@@ -72,7 +84,8 @@ def index():
             "publishedAt": article["pubDate"],
             "url": article["link"],
             "imageUrl": article["image_url"],
-            "author": article["source_id"] if "source_id" in article else None
+            "author": article["source_id"] if "source_id" in article else None,
+            "summary":summarize_news_transformer(article["content"])
         }
 
         

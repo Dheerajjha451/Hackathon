@@ -3,7 +3,7 @@ import { useState } from "react";
 import { SearchBar } from "../../assets/Component/SearchBar";
 
 const SearchPage = ({ result }) => {
-const {res}=result;
+const res=result;
 
 return (
     <div className="p-8">
