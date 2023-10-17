@@ -45,11 +45,11 @@ def Summarize():
 			"inputs": data,
 			"parameters": {"min_length": minL, "max_length": maxL},
 		})[0]
-
-		return render_template("index.html", result=output["summary_text"])
+#the file where to display the data " in this "(index.html)
+		return render_template(" ", result=output["summary_text"])
 	else:
-		return render_template("index.html")
-     
+#the file where to display the data " in this "(index.html) url
+         return render_template(" ")		#return render_template("index.html")
 #ends here
 
 
