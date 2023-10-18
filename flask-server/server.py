@@ -1,4 +1,5 @@
 from flask import Flask,jsonify,request
+from flask_cors import CORS
 import requests
 import pandas
 import json
@@ -7,6 +8,8 @@ from pymongo import MongoClient
 # import flask_cors import CORS
 new_data_api="pub_307633ead925a313254975dc49bc599c99606"
 app=Flask(__name__)
+CORS(app)
+
 #MongoDB CONNECTION
 client=MongoClient('mongodb+srv://mridultiwari:iH19Mm1c7XxEBnpz@news.tov5byl.mongodb.net/?retryWrites=true&w=majority')
 db=client['News']
@@ -15,45 +18,21 @@ cur=db['current']
 least=db['least']
 # Function
 #code start here for summarization
-# from transformers import pipeline, errors
-from flask import render_template, url_for
-from flask import request as req
-# def summarize_news_transformer(news_content, max_length=150, min_length=50):
-#     try:
-#         summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
-#         summary = summarizer([news_content], max_length=max_length, min_length=min_length, max_time=120)[0]['summary_text']
-#         return summary
-#     except errors.ModelCardNotFoundError as e:
-#         return f"Model not found: {str(e)}"
-#     except Exception as e:
-#         return f"Error during summarization: {str(e)}"
-def Summarize():
-	if req.method == "POST":
-		API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-		headers = {"Authorization": f"Bearer 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"}
+from transformers import pipeline
 
-		data = req.form["data"]
-
-		maxL = int(req.form["maxL"])
-		minL = maxL // 4
-
-		def query(payload):
-			response = requests.post(API_URL, headers=headers, json=payload)
-			return response.json()
-
-		output = query({
-			"inputs": data,
-			"parameters": {"min_length": minL, "max_length": maxL},
-		})[0]
-#the file where to display the data " in this "(index.html)
-		return render_template(" ", result=output["summary_text"])
-	else:
-#the file where to display the data " in this "(index.html) url
-         return render_template(" ")		#return render_template("index.html")
-#ends here
+@app.route("/api/summarize",methods=["POST"])
+def summarize_text(max_length=150, min_length=50):
+    transformer_model='t5-small'
+    news_content=request.json['content']
+    summarizer = pipeline("summarization", model=transformer_model)
+    
+    try:
+        summary = summarizer(news_content, max_length=max_length, min_length=min_length, max_time=120)[0]['summary_text']
+        return summary
+    except Exception as e:
+        return f"Error during summarization: {str(e)}"
 
 
-# CORS(app)
 def writetoJSONfile(path,fileName,data):
     filePathNameWExt='../'+path+'/'+fileName+'.json'
     with open(filePathNameWExt,'w') as fp:
@@ -62,15 +41,30 @@ def writetoJSONfile(path,fileName,data):
 
 @app.route("/search",methods=['GET'])
 def search():
-    keywrd="research"
+    keywrd="IOT"
     # keywrd=request.args.query
+    param={'max':20}
+    header={"Content-Type":"application/json"}
 
     apikey = "64df0ff2ec4f5e5563265ebebffba11f"
     url=f"https://gnews.io/api/v4/search?q={keywrd}&apikey={apikey}"
 
     req = requests.get(url)
     data=req.json()
-    writetoJSONfile('client/public/list','search',data)
+    # news_data=[]
+    for article in data['articles']:
+        news_article={
+            "title": article["title"],
+            # "description": article["description"],
+            "publishedAt": article["publishedAt"],
+            "url": article["url"],
+            # "imageUrl": article["image_url"],
+            "author": article["source"]["name"],
+            "summary":summarize_text("t5-small",article['content'])
+        }
+        # news_data.append(news_article)
+        # print(news_article)
+    # writetoJSONfile('client/public/list','search',news_data.json())
     
     return data
 
@@ -99,7 +93,8 @@ def recom():
     return data
 @app.route("/least",methods=['GET'])
 def index():
-    req=requests.get('https://newsdata.io/api/1/news?apikey='+new_data_api+'&q=research&language=en')
+    param={'size':6}
+    req=requests.get('https://newsdata.io/api/1/news?apikey='+new_data_api+'&q=research&language=en',params=param)
     data=req.json()
     # print(data)
     # json_data=json.loads(data)
@@ -111,8 +106,8 @@ def index():
             "publishedAt": article["pubDate"],
             "url": article["link"],
             "imageUrl": article["image_url"],
-            "author": article["source_id"] if "source_id" in article else None,
-            "summary":summarize_news_transformer(article["content"])
+            "author": article["source_id"] if "source_id" in article else None
+            # "summary":summarize_text("t5-small",article['content'])
         }
 
         
@@ -131,7 +126,8 @@ def current():
     'keywords=Student&language=en&'
     'apiKey=DXYj7nZ3yGbqcll2li1ppcFmntJn3cRCZCXu4fmZosPdwZf0')
     header={"Content-Type":"application/json","Accept-Encoding":"deflate"}
-    response = requests.get(url,headers=header)
+    param={'limit':10}
+    response = requests.get(url,headers=header,params=param)
     data=response.json()
     # print(data)
     # json_data=json.loads(data)

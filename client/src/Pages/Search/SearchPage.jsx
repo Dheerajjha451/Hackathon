@@ -2,8 +2,7 @@
 import { useState } from "react";
 import { SearchBar } from "../../assets/Component/SearchBar";
 
-const SearchPage = ({ result }) => {
-const res=result;
+const SearchPage = (props) => {
 
 return (
     <div className="p-8">
