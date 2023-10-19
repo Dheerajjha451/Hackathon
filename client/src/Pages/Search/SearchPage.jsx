@@ -1,9 +1,11 @@
 
 import { useState } from "react";
 import { SearchBar } from "../../assets/Component/SearchBar";
+import { useLocation } from "react-router-dom";
 
-const SearchPage = (props) => {
-
+const SearchPage = ({result}) => {
+    console.log(result)
+    const res = result;
 return (
     <div className="p-8">
         <SearchBar/>

@@ -3,6 +3,7 @@ import Logo from "../../assets/Component/Logo";
 import Categories from "../../assets/Component/Categories"
 import recommend from "../../../public/list/recommend.json"
 import current from "../../../public/list/current.json"
+import Least from "../../../public/list/least.json"
 import {SearchBar,SearchModal} from "../../assets/Component/SearchBar";
 import { Recomm, Res } from "../../assets/Component/Cards";
 export default function Home(){
@@ -11,14 +12,14 @@ export default function Home(){
         setmodal(!modal)
     }
    
-    const recomend=recommend.results.map(data=>{
+    const recomend=Least.map(data=>{
         return(
           <Recomm 
             {...data}
           />
         )
     })
-    const Re_search=current.news.map(data=>{
+    const Re_search=current.map(data=>{
       return(      
         <Res
           {...data}

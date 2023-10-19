@@ -37,18 +37,21 @@ export const SearchBar = ({ onSearch }) => {
 };
 
   export const SearchModal=({onSearch})=>{
-    const [query, setQuery] = useState("");
-    const [result,setResult]=useState(["ML"]);
-  
-    const handleSearch=()=>{
-      axios.get(`http://127.0.0.1:5000/search?query=${query}`)
-      .then(response=>{
-        setResult(response.data.articles)
-      })
-      .catch(error=>{
-        console.error(error)
-      })
-    }
+    const [queryy, setQuery] = useState("");
+    const [result,setResult]=useState([""]);
+    const backendUrl = "http://127.0.0.1:5000"
+    const handleSearch=async () => {
+      try {
+        
+        const response = await axios.get(`${backendUrl}/search?query=${queryy}`);
+
+        // console.log("Search results:", response.data);
+        setResult(response.data)
+      } catch (error) {
+        // Handle errors
+        console.error("Error:", error);
+      }
+    };
     const handleInputChange = (e) => {
       setQuery(e.target.value);
     };
@@ -61,13 +64,14 @@ export const SearchBar = ({ onSearch }) => {
         <div className="">
           <input
             type="text"
-            value={query}
+            value={queryy}
             onChange={handleInputChange}
             className="block text-xl w-full px-6 py-4 text-purple-700 bg-white border-white-200 focus:border-white-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-20"
             placeholder="Search..."
           />
           {/* the new link */}
-           <Link to={{ pathname: "/Search"}}> <button onClick={handleSearch} className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full xl:rounded-2xl mr-4">
+          {/* {console.log(result)} */}
+           <Link to={{pathname:"/Search",state:{result}}}> <button onClick={handleSearch} className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full xl:rounded-2xl mr-4">
     Search
   </button>
 </Link>
