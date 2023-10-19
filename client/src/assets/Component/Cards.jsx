@@ -34,3 +34,24 @@ export function Res(props){
         </div></a>
     )
 }
+export function Searching(props){
+    return(
+        <a href={props.url} target="_blank">
+        <div className="max-h-fit h-[15vh] flex w-full bg-white drop-shadow-xl rounded-xl">
+            {/* {props.image && (
+            <img loading="lazy"
+            src={props.image}
+            alt="Your Alt Text Here"
+            className="aspect-square w-1/2 rounded-l-xl"
+            />
+        )} */}
+
+            <div className="px-4 py-2 text-sm">
+                <h1 className="font-bold py-2 text-lg">{props.title}</h1>
+                {/* <h2>{props.description}</h2> */}
+                <p className="text-sm text-gray-400">{props.author}</p>
+            </div>
+            
+        </div></a>
+    )
+}

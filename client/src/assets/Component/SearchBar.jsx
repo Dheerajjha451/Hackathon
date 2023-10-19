@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import {Link} from "react-router-dom"
+import { useDataContext } from "./DataContext";
 /* eslint-disable react/prop-types */
 export const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
@@ -38,7 +39,7 @@ export const SearchBar = ({ onSearch }) => {
 
   export const SearchModal=({onSearch})=>{
     const [queryy, setQuery] = useState("");
-    const [result,setResult]=useState([""]);
+    const {result,setResult}=useDataContext();
     const backendUrl = "http://127.0.0.1:5000"
     const handleSearch=async () => {
       try {
