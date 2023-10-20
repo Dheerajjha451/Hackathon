@@ -23,40 +23,7 @@ export default function App(){
               element: <About/>,
             },
             
-            
-        //       path:"/Resources",
-        //       children:[
-        //         {
-                  
-        //           path:"/Resources/:Slugs",
-        //           element:<Resources/>
-        //         }
-        //       ]
-        //     },
-        //     {
-        //       path:"/Skills",
-        //       children:[
-        //         {
-                  
-        //           path:"/Skills/:Slugs",
-        //           element:<Skill/>
-        //         }
-        //       ]
-        //     }
-        //   ]
-        // }
-          
-        // {
-        //   path: "/events",
-        //   children: [
-        //     {
-        //       path: '/Case_Study',
-        //       element: <CaseStudies/>,
-        //     },
-        //     {
-        //       path: '/Case_Dtudy/:Case_Slug',
-        //       element: <SingleCase/>,
-        //     }
+         
           ]
         },
       ]);

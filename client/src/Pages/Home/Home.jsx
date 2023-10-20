@@ -23,13 +23,11 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${backendUrl}/`);
-        // Handle the response data
         console.log(response.data);
         set1(response.data.result.res1)
         set2(response.data.result.res2)
         set3(response.data.result.res3)
         set4(response.data.result.res4)
-        // console.log(datta)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -56,10 +54,7 @@ export default function Home() {
             <SearchBar />
           </section>
 
-          {/* <section className="mb-8">
-            <Categories />
-          </section> */}
-          {/* <h1 className="text-3xl tracking-wide py-2 font-semibold">RECOMMENDED.</h1> */}
+         
           <div className="grid grid-cols-3 place-items-start gap-12">
             <div>
               <ul className="list-disc text-justify grid gap-3">
@@ -116,15 +111,7 @@ export default function Home() {
               })}
           </div>
 
-          {/* <h1 className="text-3xl tracking-wide py-12 pb-4 font-semibold">NEW RESEARCH.</h1>
-          <div className="grid grid-cols-2 place-items-start gap-6 px-32">
-            {Re_search}
-          </div>
           
-          <h1 className="text-3xl tracking-wide py-2 font-semibold">SUBSCRIPTION.</h1>
-          <div className="grid grid-cols-3 place-items-center gap-2">
-            {recomend}
-          </div> */}
         </main>
 
       </div>

@@ -3,7 +3,6 @@ import { useState } from "react";
 import { SearchBar, SearchModal } from "../../assets/Component/SearchBar";
 import { useLocation } from "react-router-dom";
 import { useDataContext } from "../../assets/Component/DataContext";
-// import { Searching } from "../../assets/Component/Cards";
 import Sum_Block from "../../assets/Component/Sum_Block";
 import Categories from "../../assets/Component/Categories";
 

@@ -53,7 +53,7 @@ def recom():
         }
         news_data.append(news_article)
     
-    # writetoJSONfile('client/public/list','recommend',news_data)
+    
 
     print("Data inserted successfully.")
     return news_data
@@ -76,7 +76,7 @@ def least():
             "author": article["creator"]
         }
         news_data.append(news_article)
-    # writetoJSONfile('client/public/list','least',news_data)
+   
 
     print("Data inserted successfully.")
     return news_data
@@ -93,7 +93,7 @@ def daily():
             break
         news_data.append(i)
         j+=1
-    # writetoJSONfile('client/public/list','daily',news_data)
+    
     print("Data inserted successfully")
     return news_data
 # Current
@@ -123,8 +123,6 @@ def current():
         news_data.append(news_article)
         j+=1
         
-    # writetoJSONfile('client/public/list','current',news_data)
-    
 
     print("Data inserted successfully.")
     
