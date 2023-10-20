@@ -1,6 +1,6 @@
 export function Recomm(props){
     return(
-        <a href={props.url} target="_blank_"><div className="max-h-fit max-w-sm bg-white drop-shadow-xl rounded-xl">
+        <a href={props.url} target="_blank_"><div className="h-96 max-h-fit bg-white drop-shadow-xl rounded-xl">
             {props.imageUrl &&<img src={props.imageUrl} loading="lazy" className="max-w-full"/>}
             <div className="px-4 py-2 text-sm">
                 <h1 className="font-bold py-2 text-lg">{props.title}</h1>

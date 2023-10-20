@@ -8,8 +8,13 @@ import Least from "../../../public/list/least.json"
 import { SearchBar, SearchModal } from "../../assets/Component/SearchBar";
 import { Break, Recomm, Res, Respond } from "../../assets/Component/Cards";
 import axios from "axios";
+import { useDataContext } from "../../assets/Component/DataContext";
 export default function Home() {
   const [modal, setmodal] = useState(false)
+  const {res1, set1} = useDataContext()
+  const {res2, set2} = useDataContext()
+  const {res3, set3} = useDataContext()
+  const {res4, set4} = useDataContext()
   function handleModal() {
     setmodal(!modal)
   }
@@ -20,6 +25,11 @@ export default function Home() {
         const response = await axios.get(`${backendUrl}/`);
         // Handle the response data
         console.log(response.data);
+        set1(response.data.result.res1)
+        set2(response.data.result.res2)
+        set3(response.data.result.res3)
+        set4(response.data.result.res4)
+        // console.log(datta)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -54,7 +64,7 @@ export default function Home() {
             <div>
               <ul className="list-disc text-justify grid gap-3">
                 <h1 className="font-bold text-2xl underline tracking-wider underline-offset-8">LATEST ARTICLES</h1>
-                {Least.map((data) => {
+                {res3.map((data) => {
                   return (
                     <li className="font-semibold py-2 text-lg hover:text-blue-800 active:text-purple-800">
                       <a href={data.url}>{data.title}</a>
@@ -65,7 +75,7 @@ export default function Home() {
               <div className="grid gap-4">
                 <h1 className="font-bold text-2xl underline tracking-wider underline-offset-8">RECOMMENDED</h1>
                 <div className="grid grid-cols-2 gap-4">
-                {recommend.map((data) => {
+                {res1.map((data) => {
                   return (
                     data.imageUrl &&<Recomm
                       {...data}
@@ -79,14 +89,14 @@ export default function Home() {
             </div>
             <div className="grid gap-4">
               <h1 className="font-bold text-2xl underline tracking-wider underline-offset-8">THE BREAKING NEWS</h1>
-              <Break props={current[0]} />
-              <Respond props={recommend[1]} />
-              <Respond props={recommend[2]} />
-              {/* <Respond props={recommend.results[3]}/> */}
+              {res2[0]!=undefined &&<Break props={res2[0]} />}
+              {res1[1]!=undefined&&<Respond props={res1[1]} />}
+              {res2[1]!=undefined &&<Respond props={res2[1]} />}
+              {/* {/* <Respond props={recommend.results[3]}/> */}
             </div>
             <div className="grid gap-4">
               <h1 className="font-bold text-2xl underline tracking-wider underline-offset-8">Daily Feed</h1>
-              {daily.map((data) => {
+              {res4.map((data) => {
                 return (
                   <Res
                     {...data}
@@ -96,8 +106,8 @@ export default function Home() {
             </div>
           </div>
           <h1 className="font-bold pt-6 text-2xl underline tracking-wider underline-offset-8">FEATURED STORIES.</h1>
-          <div className="grid grid-cols-4 gap-4 py-4 place-items-start">
-              {current.map((data) => {
+          <div className="grid grid-cols-4 justify-evenly grid-flow-cols gap-4 py-4 place-items-start">
+              {res2.map((data) => {
                 return (
                   data.imageUrl&&<Recomm
                     {...data}
