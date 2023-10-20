@@ -4,20 +4,21 @@ import requests
 import pandas
 import json
 import jsonpickle
-from pymongo import MongoClient
-# import flask_cors import CORS
+# from pymongo import MongoClient
 new_data_api="pub_307633ead925a313254975dc49bc599c99606"
 app=Flask(__name__)
 CORS(app)
 
 #MongoDB CONNECTION
-client=MongoClient('mongodb+srv://mridultiwari:iH19Mm1c7XxEBnpz@news.tov5byl.mongodb.net/?retryWrites=true&w=majority')
-db=client['News']
-collection=db['Recommend']
-cur=db['current']
-least=db['least']
+# client=MongoClient('mongodb+srv://mridultiwari:iH19Mm1c7XxEBnpz@news.tov5byl.mongodb.net/?retryWrites=true&w=majority')
+# db=client['News']
+# collection=db['Recommend']
+# cur=db['current']
+# least=db['least']
+
+
+
 # Function
-#code start here for summarization
 from transformers import pipeline
 def summarize(transformer_model,news_content,max_length=150, min_length=50):
     # transformer_model='t5-small'
@@ -29,10 +30,10 @@ def summarize(transformer_model,news_content,max_length=150, min_length=50):
         return summary
     except Exception as e:
         return f"Error during summarization: {str(e)}"
-@app.route("/api/summarize",methods=["POST"])
-def summarize_text(max_length=150, min_length=50):
+@app.route("/api/summarize",methods=['GET',"POST"])
+def summarize_text(max_length=150, min_length=90):
     transformer_model='t5-small'
-    news_content=request.json['content']
+    news_content=request.args.get('content')
     summarizer = pipeline("summarization", model=transformer_model)
     
     try:
@@ -47,6 +48,15 @@ def writetoJSONfile(path,fileName,data):
     with open(filePathNameWExt,'w') as fp:
         json.dump(data,fp)
 #Route
+@app.route("/",methods=['GET'])
+def multi_routes():
+    result1=recom()
+    result2=current()
+    result3=least()
+    result4=daily()
+    # result1=recom()
+    combined_result={'res1':result1,'res2':result2,'res3':result3,'res4':result4}
+    return jsonify({'result':combined_result})
 
 @app.route("/search",methods=['GET'])
 def search():
@@ -66,6 +76,7 @@ def search():
         news_article={
             "title": article["title"],
             "description": article["description"],
+            "content": article["content"],
             "publishedAt": article["publishedAt"],
             "url": article["url"],
             # "imageUrl": article["image_url"],
@@ -80,8 +91,8 @@ def search():
 
 @app.route("/recommend",methods=['GET'])
 def recom():
-    keyword="research"
-    req=requests.get("https://newsapi.org/v2/top-headlines?q="+keyword+"&country=in&apiKey=5fa7fea02e704a4894aa8b0189d08027")
+    keyword="study"
+    req=requests.get("https://newsapi.org/v2/top-headlines?q="+keyword+"&apiKey=5fa7fea02e704a4894aa8b0189d08027&language=en")
     data=req.json()
     # print(data)
     news_data=[]
@@ -104,12 +115,12 @@ def recom():
     print("Data inserted successfully.")
     return news_data
 @app.route("/least",methods=['GET'])
-def index():
+def least():
     param={'size':6}
     req=requests.get('https://newsdata.io/api/1/news?apikey='+new_data_api+'&q=research&language=en',params=param)
     data=req.json()
    
-    news_Data=[]
+    news_data=[]
     for article in data["results"]:
         news_article = {
             "title": article["title"],
@@ -119,18 +130,32 @@ def index():
             "url": article["link"],
             "imageUrl": article["image_url"],
             "author": article["source_id"] if "source_id" in article else None,
-            "summary":summarize("t5-small",article['content'])
+            # "summary":summarize("t5-small",article['content'])
         }
-        news_Data.append(news_article)
+        news_data.append(news_article)
         # print(news_article)
-    writetoJSONfile('client/public/list','least',news_Data)
-        
-        # least.insert_one(news_article)
-
+    writetoJSONfile('client/public/list','least',news_data)
     print("Data inserted successfully.")
     # writetoJSONfile('client/public/list','recommend',json_data)
-    return news_Data
+    return news_data
 
+# Latest RSS
+@app.route("/daily",methods=['GET'])
+def daily():
+    rssfile="https://www.thehindu.com/sci-tech/science/feeder/default.rss"
+    url="https://rss-to-json-serverless-api.vercel.app/api?feedURL="+rssfile
+    response=requests.get(url)
+    data=response.json()
+    news_data=[]
+    j=0
+    for i in data['items']:
+        if(j==10):
+            break
+        news_data.append(i)
+        j+=1
+    writetoJSONfile('client/public/list','daily',news_data)
+    print("Data inserted successfully")
+    return news_data
 # Current
 
 @app.route("/current",methods=['GET'])

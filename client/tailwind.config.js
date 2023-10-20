@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       "backgroundColor":{
-        "black":"rgba(0, 0, 0, 0.322)"
+        "black":"rgba(0, 0, 0, 0.552)"
       }
     },
   },

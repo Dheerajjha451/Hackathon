@@ -7,10 +7,10 @@ const MainLayout = () => {
   return (
     <div className="">
       <Navbar/>
-      <div className="">
+      <div className="py-0">
         <Outlet />
-        <Footer/>
       </div>
+      <Footer/>
     </div>
   );
 };

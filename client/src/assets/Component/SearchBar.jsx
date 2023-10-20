@@ -59,10 +59,10 @@ export const SearchBar = ({ onSearch }) => {
   
     
   return(
-    <div className="bg-black absolute w-screen h-screen">
+    <div className="bg-black absolute top-16 py-12 w-screen h-screen">
     <div className="flex flex-start pt-4 justify-center">
       <div className=" w-full md:w-3/4 lg:w-2/3 xl:w-1/2 ">
-        <div className="">
+        <div className="flex gap-2 ">
           <input
             type="text"
             value={queryy}
@@ -72,7 +72,7 @@ export const SearchBar = ({ onSearch }) => {
           />
           {/* the new link */}
           {/* {console.log(result)} */}
-           <Link to={{pathname:"/Search",state:{result}}}> <button onClick={handleSearch} className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full xl:rounded-2xl mr-4">
+           <Link to={{pathname:"/Search",state:{result}}}> <button onClick={handleSearch} className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 mr-4">
     Search
   </button>
 </Link>
