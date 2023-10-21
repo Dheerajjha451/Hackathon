@@ -14,3 +14,13 @@ What sets StudBud apart is our commitment to your convenience. We know your time
 At StudBud, we believe that knowledge is power. That's why we're here to empower you with insights into your academic world. Whether it's the latest updates, opportunities, or student life tips, StudBud is your go-to source.
 
 Stay informed, make the most of your academic journey, and explore endless opportunities with StudBud. Welcome to a world of authentic, relevant information right at your fingertips.
+
+## If anyone wants to clone the app, then follow the steps:
+1. Fork this repository
+2. Clone your forked repository using: 
+```git clone <forked repository's SSH or HTTPS>```
+3. add the following command:
+   ```git remote add upstream <this repo's SSH or HTTPS>```
+4. Your Repo is Cloned.
+5. Now install all the desired libraries and enjoy
+
