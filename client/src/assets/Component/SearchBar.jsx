@@ -3,6 +3,7 @@ import axios from "axios";
 import {Link} from "react-router-dom"
 import { useDataContext } from "./DataContext";
 /* eslint-disable react/prop-types */
+// Search BAR
 export const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
 
@@ -10,9 +11,6 @@ export const SearchBar = ({ onSearch }) => {
     setQuery(e.target.value);
   };
 
-  const handleSearch = () => {
-    onSearch(query);
-  };
 
   return (
     <div className="flex items-center justify-center">
@@ -25,18 +23,13 @@ export const SearchBar = ({ onSearch }) => {
             className="block w-full px-4 py-2 text-purple-700 bg-white border rounded-full focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
             placeholder="Search..."
           />
-          {/* <button
-            onClick={handleSearch}
-            className="px-4 text-white bg-blue-600 rounded-full"
-          >
-            Search
-          </button> */}
+          
         </div>
       </div>
     </div>
   );
 };
-
+// Search Modal
   export const SearchModal=({onSearch})=>{
     const [queryy, setQuery] = useState("");
     const {result,setResult}=useDataContext();
@@ -45,11 +38,8 @@ export const SearchBar = ({ onSearch }) => {
       try {
         
         const response = await axios.get(`${backendUrl}/search?query=${queryy}`);
-
-        // console.log("Search results:", response.data);
         setResult(response.data)
       } catch (error) {
-        // Handle errors
         console.error("Error:", error);
       }
     };
@@ -70,14 +60,11 @@ export const SearchBar = ({ onSearch }) => {
             className="block text-xl w-full px-6 py-4 text-purple-700 bg-white border-white-200 focus:border-white-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-20"
             placeholder="Search..."
           />
-          {/* the new link */}
-          {/* {console.log(result)} */}
-           <Link to={{pathname:"/Search",state:{result}}}> <button onClick={handleSearch} className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 mr-4">
+          {/* the Link to search page with result array fetched sending as a state */}
+          <Link to={{pathname:"/Search",state:{result}}}> <button onClick={handleSearch} className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 mr-4">
     Search
   </button>
 </Link>
-{/* Previous code */}
-           {/* <Link to={{path:"/Search", state:{result}}}><button onClick={handleSearch}>Search</button></Link> */}
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import Categories from "./Categories";
-
+// Basic navbar that displayed the name of the app
 export default function Navbar(){
     return(
         <div className=" w-screen">

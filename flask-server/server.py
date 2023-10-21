@@ -7,6 +7,7 @@ app=Flask(__name__)
 CORS(app)
 
 # Function
+#Summary function using Transformer library and t5-small model
 from transformers import pipeline
 def summarize(transformer_model,news_content,max_length=150, min_length=50):
     summarizer = pipeline("summarization", model=transformer_model)
@@ -27,13 +28,13 @@ def summarize_text(max_length=150, min_length=90):
     except Exception as e:
         return f"Error during summarization: {str(e)}"
 
-
+# writing data to JSON FILE (Done earlier to improve the speed of data later removed.)
 def writetoJSONfile(path,fileName,data):
     filePathNameWExt='../'+path+'/'+fileName+'.json'
     with open(filePathNameWExt,'w') as fp:
         json.dump(data,fp)
 
-
+# Function for Recommended section
 def recom():
     keyword="study"
     req=requests.get("https://newsapi.org/v2/top-headlines?q="+keyword+"&apiKey=5fa7fea02e704a4894aa8b0189d08027&language=en")
@@ -57,6 +58,7 @@ def recom():
 
     print("Data inserted successfully.")
     return news_data
+# Function for Latest Article Section
 def least():
     
     param={'size':6}
@@ -80,7 +82,7 @@ def least():
 
     print("Data inserted successfully.")
     return news_data
-# Latest RSS
+# Function for Daily Feed Section used RSS TO JSON
 def daily():
     rssfile="https://www.thehindu.com/sci-tech/science/feeder/default.rss"
     url="https://rss-to-json-serverless-api.vercel.app/api?feedURL="+rssfile
@@ -96,8 +98,7 @@ def daily():
     
     print("Data inserted successfully")
     return news_data
-# Current
-
+# Function for Fetching Breaking news and Featured Content
 def current():
     
     url = ('https://api.currentsapi.services/v1/search?latest-news?'
@@ -128,7 +129,7 @@ def current():
     
     return news_data
 
-#Route
+#Route Section
 @app.route("/",methods=['GET'])
 def multi_routes():
     result1=recom()
@@ -138,7 +139,7 @@ def multi_routes():
     
     combined_result={'res1':result1,'res2':result2,'res3':result3,'res4':result4}
     return jsonify({'result':combined_result})
-
+# Search Route for the Search bar which will ask this fucntion for fetch information from.
 @app.route("/search",methods=['GET'])
 def search():
     

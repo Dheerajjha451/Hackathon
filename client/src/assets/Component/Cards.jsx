@@ -1,3 +1,4 @@
+// Contain all different kinds of cards used with props
 export function Recomm(props){
     return(
         <a href={props.url} target="_blank_"><div className="h-96 max-h-fit bg-white drop-shadow-xl rounded-xl">

@@ -7,10 +7,11 @@ import Sum_Block from "../../assets/Component/Sum_Block";
 import Categories from "../../assets/Component/Categories";
 
 const SearchPage = () => {
+    // Model States
     const [isOpen,setIsOpen]=useState(false);
-
+    //Article States 
     const [selectedArtcile,setSelectedContent]=useState({});
-
+    // Modal Functions
     const OpenSumm=(content)=>{
         setIsOpen(true);
     }
@@ -26,8 +27,8 @@ const SearchPage = () => {
     function handleModal(){
         setmodal(!modal)
     }
+    // Used useContext so that arrays can be used anywhere in the program
     const res = useDataContext();
-    // console.log(res.result)
 return (
     <div className="py-0">
         
@@ -46,6 +47,7 @@ return (
             </section>
             <div className="grid place-items-center">
             <div className="grid gap-4 text-justify w-1/2">
+                {/* Search Result Section */}
                 <h1 className="text-3xl tracking-wide py-2 font-bold text-gray-400">Search Result.</h1>
                 <div className="grid grid-cols-1 place-items-left gap-2">
                 {res.result.map((data) =>{
@@ -59,6 +61,7 @@ return (
                     
                 })}
                 </div>
+                {/* Summary Modal */}
                 <Sum_Block
                     isOpen={isOpen}
                     closeModal={closeSumm}

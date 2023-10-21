@@ -1,4 +1,4 @@
-
+// Made as the first draft for different cards
 const Frame = ({ searchResults }) => {
     return (
       <div className="frame">

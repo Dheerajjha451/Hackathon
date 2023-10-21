@@ -5,6 +5,7 @@ import Modal from "react-modal"
 export default function Sum_Block({isOpen,closeModal, article}) {
   const [summary, setSummary] = useState('');
   const backendUrl = "http://127.0.0.1:5000"
+  // This function asking the backend summarize function to create summary from the given content
   const fetchSummary = async () => {
     try {
       const response = await Axios.get(`${backendUrl}/api/summarize`, {
@@ -13,11 +14,11 @@ export default function Sum_Block({isOpen,closeModal, article}) {
         },
       });
       setSummary(response.data);
-      // console.log(article)
     } catch (error) {
       console.error('Error fetching summary:', error);
     }
   };
+  // Custom Style for Sumarry Modal
   const customStyles = {
     content: {
       top: '50%',

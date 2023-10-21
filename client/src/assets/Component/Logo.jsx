@@ -1,4 +1,4 @@
-
+// Made to store logo in case of rebranding
 const Logo = () => {
     return (
         <div className="bg-white w-full py-3">

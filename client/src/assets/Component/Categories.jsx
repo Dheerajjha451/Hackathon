@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Categories = () => {
   
-
+// used as the navbar that we used to navigate to different pages specified.
   return (
     <div className="flex items-center justify-center flex-wrap gap-16">
    

@@ -1,15 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import Logo from "../../assets/Component/Logo";
 import Categories from "../../assets/Component/Categories"
-import recommend from "../../../public/list/recommend.json"
-import daily from "../../../public/list/daily.json"
-import current from "../../../public/list/current.json"
-import Least from "../../../public/list/least.json"
 import { SearchBar, SearchModal } from "../../assets/Component/SearchBar";
 import { Break, Recomm, Res, Respond } from "../../assets/Component/Cards";
 import axios from "axios";
 import { useDataContext } from "../../assets/Component/DataContext";
 export default function Home() {
+  // Modal State and Different Fetched Result States
   const [modal, setmodal] = useState(false)
   const {res1, set1} = useDataContext()
   const {res2, set2} = useDataContext()
@@ -18,7 +14,9 @@ export default function Home() {
   function handleModal() {
     setmodal(!modal)
   }
+  // BACKEND URL
   const backendUrl="http://127.0.0.1:5000"
+  // Function that fetches all content for Home Page on PageLoad
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,6 +40,7 @@ export default function Home() {
         <button className="fixed z-10 right-5 border border-black px-4 py-2 text-5xl font-bold text-red-600" onClick={handleModal}>X</button>
         <SearchModal />
       </div>}
+      {/* Works as a Navbar */}
       <div className="container mx-auto p-4">
         <div className="w-full bg-white pt-16 pb-4">
           <Categories />
@@ -56,6 +55,7 @@ export default function Home() {
 
          
           <div className="grid grid-cols-3 place-items-start gap-12">
+            {/* Latest Article */}
             <div>
               <ul className="list-disc text-justify grid gap-3">
                 <h1 className="font-bold text-2xl underline tracking-wider underline-offset-8">LATEST ARTICLES</h1>
@@ -67,6 +67,7 @@ export default function Home() {
                   )
                 })}
               </ul>
+              {/* Recommended Section */}
               <div className="grid gap-4">
                 <h1 className="font-bold text-2xl underline tracking-wider underline-offset-8">RECOMMENDED</h1>
                 <div className="grid grid-cols-2 gap-4">
@@ -82,13 +83,15 @@ export default function Home() {
               </div>
 
             </div>
+            {/* Breaking News Section */}
             <div className="grid gap-4">
               <h1 className="font-bold text-2xl underline tracking-wider underline-offset-8">THE BREAKING NEWS</h1>
               {res2[0]!=undefined &&<Break props={res2[0]} />}
               {res1[1]!=undefined&&<Respond props={res1[1]} />}
               {res2[1]!=undefined &&<Respond props={res2[1]} />}
-              {/* {/* <Respond props={recommend.results[3]}/> */}
+              
             </div>
+            {/* Daily Feed Section */}
             <div className="grid gap-4">
               <h1 className="font-bold text-2xl underline tracking-wider underline-offset-8">Daily Feed</h1>
               {res4.map((data) => {
@@ -100,6 +103,7 @@ export default function Home() {
               })}
             </div>
           </div>
+          {/* Featured Content Section*/}
           <h1 className="font-bold pt-6 text-2xl underline tracking-wider underline-offset-8">FEATURED STORIES.</h1>
           <div className="grid grid-cols-4 justify-evenly grid-flow-cols gap-4 py-4 place-items-start">
               {res2.map((data) => {
