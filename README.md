@@ -23,4 +23,17 @@ Stay informed, make the most of your academic journey, and explore endless oppor
    ```git remote add upstream <this repo's SSH or HTTPS>```
 4. Your Repo is Cloned.
 5. Now install all the desired libraries and enjoy
+   a. For client side do the following:
+      ```cd client```
+      ```npm install```
+   b. For server side do the following:
+      - first follow the steps mentioned in here: https://www.geeksforgeeks.org/creating-python-virtual-environment-windows-linux/
+      - Then ```pip install <package-name>```
+      Use the above command to install following packages:
+      - flask
+      - json
+      - jsonify
+      - flask_cors
+      - transformers
+      - requests
 
