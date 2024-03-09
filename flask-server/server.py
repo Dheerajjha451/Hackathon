@@ -8,25 +8,25 @@ CORS(app)
 
 # Function
 #Summary function using Transformer library and t5-small model
-from transformers import pipeline
-def summarize(transformer_model,news_content,max_length=150, min_length=50):
-    summarizer = pipeline("summarization", model=transformer_model)
-    try:
-        summary = summarizer(news_content, max_length=max_length, min_length=min_length, max_time=120)[0]['summary_text']
-        return summary
-    except Exception as e:
-        return f"Error during summarization: {str(e)}"
-@app.route("/api/summarize",methods=['GET',"POST"])
-def summarize_text(max_length=150, min_length=90):
-    transformer_model='t5-small'
-    news_content=request.args.get('content')
-    summarizer = pipeline("summarization", model=transformer_model)
+# from transformers import pipeline
+# def summarize(transformer_model,news_content,max_length=150, min_length=50):
+#     summarizer = pipeline("summarization", model=transformer_model)
+#     try:
+#         summary = summarizer(news_content, max_length=max_length, min_length=min_length, max_time=120)[0]['summary_text']
+#         return summary
+#     except Exception as e:
+#         return f"Error during summarization: {str(e)}"
+# @app.route("/api/summarize",methods=['GET',"POST"])
+# def summarize_text(max_length=150, min_length=90):
+#     transformer_model='t5-small'
+#     news_content=request.args.get('content')
+#     summarizer = pipeline("summarization", model=transformer_model)
     
-    try:
-        summary = summarizer(news_content, max_length=max_length, min_length=min_length, max_time=120)[0]['summary_text']
-        return summary
-    except Exception as e:
-        return f"Error during summarization: {str(e)}"
+#     try:
+#         summary = summarizer(news_content, max_length=max_length, min_length=min_length, max_time=120)[0]['summary_text']
+#         return summary
+#     except Exception as e:
+#         return f"Error during summarization: {str(e)}"
 
 # writing data to JSON FILE (Done earlier to improve the speed of data later removed.)
 def writetoJSONfile(path,fileName,data):
@@ -135,9 +135,9 @@ def multi_routes():
     result1=recom()
     result2=current()
     result3=least()
-    result4=daily()
+    # result4=daily()
     
-    combined_result={'res1':result1,'res2':result2,'res3':result3,'res4':result4}
+    combined_result={'res1':result1,'res2':result2,'res3':result3}
     return jsonify({'result':combined_result})
 # Search Route for the Search bar which will ask this fucntion for fetch information from.
 @app.route("/search",methods=['GET'])
